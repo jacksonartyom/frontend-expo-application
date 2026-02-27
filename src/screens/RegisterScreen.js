@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { commonStyles as styles } from '../styles/commonStyles';
+import { registerStyles as styles } from '../styles/registerStyles';
 import { register } from "../services/authService";
 
 export default function RegisterScreen({ navigation }) {

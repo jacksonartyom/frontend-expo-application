@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createWallet } from "./walletService";
 
 export default function AddWalletScreen({ navigation }) {
-    const API_URL = 'http://localhost:3000/dev';
 
     const [walletName, setWalletName] = useState("");
     const [accountNo, setAccountNo] = useState("");
@@ -70,7 +69,7 @@ export default function AddWalletScreen({ navigation }) {
 
         try {
             const token = await AsyncStorage.getItem("token");
-            const response = await createWallet(API_URL, token, requestBody);
+            const response = await createWallet(token, requestBody);
             if (!response.ok) {
                 throw new Error("Save wallet failed");
             }

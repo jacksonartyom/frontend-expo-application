@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { login } from '../services/authService';
-import { commonStyles as styles } from '../styles/commonStyles';
+import { signinStyles as styles } from '../styles/signinStyles';
 
 
 export default function SignInScreen({ navigation, setIsLoggedIn }) {

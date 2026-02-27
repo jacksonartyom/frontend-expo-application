@@ -5,22 +5,81 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 
-import HomeScreen from "./screens/main-menu/HomeScreen";
-import TransactionScreen from "./screens/transaction/TransactionScreen";
-import AddWalletScreen from "./screens/wallet/AddWalletScreen";
-import WalletScreen from "./screens/wallet/WalletScreen";
-import RegisterScreen from "./src/screens/RegisterScreen";
 import SignInScreen from "./src/screens/SignInScreen";
+import RegisterScreen from "./src/screens/RegisterScreen";
+import DashboardScreen from "./src/screens/DashboardScreen";
+import TransactionScreen from "./screens/transaction/TransactionScreen";
+import TransactionDetailScreen from "./src/screens/TransactionDetailScreen";
+import WalletScreen from "./src/screens/WalletScreen";
+import WalletCreateScreen from "./src/screens/WalletCreateScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function DashboardStack({ setIsLoggedIn }) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Dashboard">
+        {(props) => (
+          <DashboardScreen
+            {...props}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        )}
+      </Stack.Screen>
+    </Stack.Navigator>
+  );
+}
+
+function TransactionStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="TransactionList"
+        component={TransactionScreen}
+        options={{ title: "Transactions" }}
+      />
+
+      {/* เพิ่มหน้า detail / add ได้ตรงนี้ */}
+      {/* <Stack.Screen name="TransactionDetail" component={TransactionDetailScreen} /> */}
+    </Stack.Navigator>
+  );
+}
+
+function WalletStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="WalletList"
+        component={WalletScreen}
+        options={{ title: "Wallets" }}
+      />
+
+      <Stack.Screen
+        name="AddWallet"
+        component={WalletCreateScreen}
+        options={{ title: "Add Wallets" }}
+      />
+      <Stack.Screen
+        name="TransactionDetail"
+        component={TransactionDetailScreen}
+        options={{ title: "Transactions Detail" }}
+      />
+      {/* เพิ่มหน้า detail / add ได้ตรงนี้ */}
+    </Stack.Navigator>
+  );
+}
+
 function MainTabs({ setIsLoggedIn }) {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home">
+
+      <Tab.Screen
+        name="DashboardTab"
+        options={{ headerShown: false, title: "Dashboard" }}
+      >
         {(props) => (
-          <HomeScreen
+          <DashboardStack
             {...props}
             setIsLoggedIn={setIsLoggedIn}
           />
@@ -28,14 +87,17 @@ function MainTabs({ setIsLoggedIn }) {
       </Tab.Screen>
 
       <Tab.Screen
-        name="Transactions"
-        component={TransactionScreen}
+        name="TransactionsTab"
+        component={TransactionStack}
+        options={{ headerShown: false, title: "Transactions" }}
       />
 
       <Tab.Screen
-        name="Wallets"
-        component={WalletScreen}
+        name="WalletsTab"
+        component={WalletStack}
+        options={{ headerShown: false, title: "Wallets" }}
       />
+
     </Tab.Navigator>
   );
 }
@@ -66,8 +128,6 @@ export default function App() {
             {() => <MainTabs
               setIsLoggedIn={setIsLoggedIn} />}
           </Stack.Screen>
-
-          <Stack.Screen name="Add Wallet" component={AddWalletScreen} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>
