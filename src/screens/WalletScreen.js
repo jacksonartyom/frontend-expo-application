@@ -1,6 +1,6 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useLayoutEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { getWalletList } from '../services/walletService';
 import { walletStyles as styles } from '../styles/walletStyles';
 

@@ -4,14 +4,18 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
+import { Ionicons } from '@expo/vector-icons';
 
 import SignInScreen from "./src/screens/SignInScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import DashboardScreen from "./src/screens/DashboardScreen";
-import TransactionScreen from "./screens/transaction/TransactionScreen";
+import TransactionMainScreen from "./src/screens/TransactionMainScreen";
+import TransactionCreateScreen from "./src/screens/TransactionCreateScreen";
 import TransactionDetailScreen from "./src/screens/TransactionDetailScreen";
 import WalletScreen from "./src/screens/WalletScreen";
 import WalletCreateScreen from "./src/screens/WalletCreateScreen";
+import CategoryScreen from "./src/screens/CategoryScreen";
+import CategoryCreateScreen from "./src/screens/CategoryCreateScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,13 +39,15 @@ function TransactionStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="TransactionList"
-        component={TransactionScreen}
-        options={{ title: "Transactions" }}
+        name="TransactionMain"
+        component={TransactionMainScreen}
+        options={{ title: "Transaction" }}
       />
-
-      {/* เพิ่มหน้า detail / add ได้ตรงนี้ */}
-      {/* <Stack.Screen name="TransactionDetail" component={TransactionDetailScreen} /> */}
+      <Stack.Screen
+        name="AddTransaction"
+        component={TransactionCreateScreen}
+        options={{ title: "Add Transaction" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -70,13 +76,42 @@ function WalletStack() {
   );
 }
 
+function CategoryStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="CategoryList"
+        component={CategoryScreen}
+        options={{ title: "Category" }}
+      />
+
+      <Stack.Screen
+        name="AddCategory"
+        component={CategoryCreateScreen}
+        options={{ title: "Add Category" }}
+      />
+      {/* เพิ่มหน้า detail / add ได้ตรงนี้ */}
+    </Stack.Navigator>
+  );
+}
+
 function MainTabs({ setIsLoggedIn }) {
   return (
     <Tab.Navigator>
 
       <Tab.Screen
         name="DashboardTab"
-        options={{ headerShown: false, title: "Dashboard" }}
+        options={{
+          headerShown: false,
+          title: "Dashboard",
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "podium" : "podium-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
       >
         {(props) => (
           <DashboardStack
@@ -89,13 +124,49 @@ function MainTabs({ setIsLoggedIn }) {
       <Tab.Screen
         name="TransactionsTab"
         component={TransactionStack}
-        options={{ headerShown: false, title: "Transactions" }}
+        options={{
+          headerShown: false,
+          title: "Transaction",
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "add-circle" : "add-circle-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
       />
 
       <Tab.Screen
         name="WalletsTab"
         component={WalletStack}
-        options={{ headerShown: false, title: "Wallets" }}
+        options={{
+          headerShown: false,
+          title: "Wallets",
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "cash" : "cash-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="CategoryTab"
+        component={CategoryStack}
+        options={{
+          headerShown: false,
+          title: "Category",
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "file-tray-full" : "file-tray-full-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
       />
 
     </Tab.Navigator>
