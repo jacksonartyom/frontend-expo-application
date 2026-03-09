@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { Text, TextInput, TouchableOpacity, View, Keyboard } from "react-native";
 import { createCategories } from "../services/categoryService";
 import { categoryStyles as styles } from '../styles/categoryStyles';
 
@@ -9,6 +10,16 @@ export default function CategoryCreateScreen({ navigation }) {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [errors, setErrors] = useState({});
+
+  useFocusEffect(
+    useCallback(() => {
+      Keyboard.dismiss();
+
+      if (typeof document !== "undefined" && document.activeElement) {
+        document.activeElement.blur();
+      }
+    }, [])
+  );
 
   const handleSave = async () => {
     let newErrors = {};
@@ -33,7 +44,7 @@ export default function CategoryCreateScreen({ navigation }) {
         throw new Error("Save category failed");
       }
       alert("Category saved successfully!");
-      navigation.navigate('CategoryList');
+      navigation.goBack();
 
     } catch (error) {
       alert("An error occurred. Please try again.");

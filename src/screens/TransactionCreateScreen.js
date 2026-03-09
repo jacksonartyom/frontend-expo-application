@@ -1,32 +1,210 @@
 // AddTransactionScreen.js
-import React, { useState } from "react";
-import { View, TextInput, Button } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Button,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+// 👇 import service ของคุณ
+import { getCategoriesList } from '../services/categoryService';
 
 export default function TransactionCreateScreen({ route, navigation }) {
   const { onAdd } = route.params;
 
   const [name, setName] = useState("");
+  const [note, setNote] = useState("");
   const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
+  const [type, setType] = useState("income");
+  const [categoryId, setCategoryId] = useState("");
+  const [categoryList, setCategoryList] = useState([]);
+
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  // 🔥 โหลด category จาก API
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+    const fetchCategory = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await getCategoriesList(token);
+      const data = await response.json();
+
+      if (data.result) {
+        setCategoryList(data.result);
+      } else if (data.error === 'Invalid token') {
+        await AsyncStorage.removeItem("userId");
+        await AsyncStorage.removeItem("token");
+        await AsyncStorage.removeItem("NAVIGATION_STATE");
+        setIsLoggedIn(false);
+      }
+
+    } catch (error) {
+      alert('Network error');
+    }
+  };
+
+  // 🔥 filter category ตาม type
+  const filteredCategory = useMemo(() => {
+    return categoryList.filter((item) => item.type === type);
+  }, [categoryList, type]);
+
+  const formatDate = (dateObj) => {
+    const yyyy = dateObj.getFullYear();
+    const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const dd = String(dateObj.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  };
 
   const handleSubmit = () => {
+    if (!name || !amount || !categoryId) return;
+
+    const selectedCategory = categoryList.find(
+      (item) => item._id === categoryId
+    );
+
     const newItem = {
       name,
+      note,
       amount: parseFloat(amount),
-      category,
+      type,
+      categoryId,
+      categoryName: selectedCategory?.name,
+      transactionDate: formatDate(date),
     };
 
-    onAdd(newItem);      // 👈 ส่งกลับไปหน้าแรก
-    navigation.goBack(); // 👈 กลับหน้า Transaction
+    onAdd(newItem);
+    navigation.goBack();
   };
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
-      <TextInput placeholder="Name" value={name} onChangeText={setName} />
-      <TextInput placeholder="Amount" value={amount} onChangeText={setAmount} />
-      <TextInput placeholder="Category" value={category} onChangeText={setCategory} />
+    <View style={styles.container}>
+      <Text style={styles.label}>Name</Text>
+      <TextInput
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+      />
 
-      <Button title="Add" onPress={handleSubmit} />
+      <Text style={styles.label}>Note</Text>
+      <TextInput
+        style={[styles.input, styles.multiline]}
+        value={note}
+        onChangeText={setNote}
+        multiline
+      />
+
+      <Text style={styles.label}>Amount</Text>
+      <TextInput
+        style={styles.input}
+        value={amount}
+        onChangeText={(text) =>
+          setAmount(text.replace(/[^0-9.]/g, ""))
+        }
+        keyboardType="numeric"
+      />
+
+      <Text style={styles.label}>Type</Text>
+      <View style={styles.pickerWrapper}>
+        <Picker
+          selectedValue={type}
+          onValueChange={(value) => {
+            setType(value);
+            setCategoryId(""); // reset category เมื่อเปลี่ยน type
+          }}
+        >
+          <Picker.Item label="Income" value="income" />
+          <Picker.Item label="Expense" value="expense" />
+        </Picker>
+      </View>
+
+      <Text style={styles.label}>Category</Text>
+      <View style={styles.pickerWrapper}>
+        <Picker
+          selectedValue={categoryId}
+          onValueChange={(value) => setCategoryId(value)}
+        >
+          <Picker.Item label="Select category" value="" />
+          {filteredCategory.map((item) => (
+            <Picker.Item
+              key={item._id}
+              label={item.name}
+              value={item._id}
+            />
+          ))}
+        </Picker>
+      </View>
+
+      <Text style={styles.label}>Transaction Date</Text>
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowDatePicker(true)}
+      >
+        <Text>{formatDate(date)}</Text>
+      </TouchableOpacity>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={date}
+          mode="date"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
+          onChange={(event, selectedDate) => {
+            setShowDatePicker(false);
+            if (selectedDate) {
+              setDate(selectedDate);
+            }
+          }}
+        />
+      )}
+
+      <View style={{ marginTop: 20 }}>
+        <Button title="Add Transaction" onPress={handleSubmit} />
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#fff",
+  },
+  label: {
+    marginBottom: 6,
+    fontWeight: "600",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+  },
+  multiline: {
+    height: 80,
+    textAlignVertical: "top",
+  },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  dateButton: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 12,
+  },
+});

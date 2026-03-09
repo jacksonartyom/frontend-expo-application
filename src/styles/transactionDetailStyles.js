@@ -184,4 +184,110 @@ export const transactionDetailStyles = StyleSheet.create({
     tdExpenseText: {
         color: "#F44336",
     },
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: "#fff",
+    },
+
+    dropdownWrapper: {
+        zIndex: 1000,
+    },
+
+    addButtonWrapper: {
+        marginTop: 30,   // 👈 ดันปุ่มลงมา
+    },
+
+    listContainer: {
+        marginTop: 20,
+        paddingBottom: 20,
+    },
+
+    listItem: {
+        paddingVertical: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: "#eee",
+    },
+
+    saveButtonWrapper: {
+        marginTop: 20,
+    },
+    listItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: "#eee",
+        backgroundColor: "#fff",
+    },
+
+    gridLeft: {
+        flex: 1,
+    },
+
+    gridCenter: {
+        flex: 1,
+    },
+
+    gridRight: {
+        flex: 1,
+        alignItems: "flex-end",
+    },
+
+    categoryText: {
+        fontSize: 16,
+        color: "#888",
+        fontWeight: "bold",
+        textTransform: "uppercase"
+    },
+
+    nameText: {
+        fontSize: 14,
+        fontWeight: "500",
+    },
+
+    amountText: {
+        fontSize: 14,
+        fontWeight: "bold",
+    },
+    addButton: {
+        backgroundColor: "#2E86FF",
+        padding: 14,
+        borderRadius: 8,
+        alignItems: "center",
+    },
+
+    addButtonDisabled: {
+        backgroundColor: "#ccc",
+    },
+
+    addButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+    deleteButton: {
+        marginLeft: 10,
+        padding: 6,
+    },
+
+    listItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: "#eee",
+        backgroundColor: "#fff",
+    },
+    tdIncomeText: {
+        color: "#16a34a",
+        fontWeight: "bold",
+    },
+
+    tdExpenseText: {
+        color: "#dc2626",
+        fontWeight: "bold",
+    },
 });

@@ -22,3 +22,14 @@ export const createCategories = async (token, requestBody) => {
     });
     return response;
 };
+
+export const deleteCategories = async (token, id) => {
+    const response = await fetch(API_URL + "/categories/" + id, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response;
+};

@@ -106,6 +106,7 @@ export const categoryStyles = StyleSheet.create({
 
     actionContainer: {
         position: "absolute",
+        paddingTop: 15,
         right: 10,
         flexDirection: "row",
     },

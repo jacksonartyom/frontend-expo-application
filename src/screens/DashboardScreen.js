@@ -90,49 +90,53 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
 
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Total Balance */}
-                <View style={styles.balanceSection}>
-                    <Text style={styles.balanceTitle}>Total Balance</Text>
-                    <Text style={styles.balanceAmount}>฿ {totalBalance}</Text>
-                </View>
+            <FlatList
+                data={recentDataList}
+                keyExtractor={(item) => item._id}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+                ListHeaderComponent={
+                    <>
+                        {/* Total Balance */}
+                        <View style={styles.balanceSection}>
+                            <Text style={styles.balanceTitle}>Total Balance</Text>
+                            <Text style={styles.balanceAmount}>฿ {totalBalance}</Text>
+                        </View>
 
-                {/* Wallet Section */}
-                <View style={styles.walletSection}>
-                    <View style={styles.walletHeader}>
-                        <Text style={styles.walletTitle}>My wallets</Text>
-                        <TouchableOpacity style={styles.addButton}>
-                            <Text style={styles.addText}>+</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <FlatList
-                        data={walletList}
-                        keyExtractor={(item) => item._id}
-                        numColumns={2}
-                        columnWrapperStyle={{ justifyContent: "space-between" }}
-                        contentContainerStyle={{ marginTop: 15 }}
-                        renderItem={({ item }) => (
-                            <View style={styles.walletCard}>
-                                <Text style={styles.walletName}>{item.wallet_name}</Text>
-                                <Text style={styles.walletAmount}>
-                                    ฿ {item.balance.toLocaleString()}
-                                </Text>
+                        {/* Wallet Section */}
+                        <View style={styles.walletSection}>
+                            <View style={styles.walletHeader}>
+                                <Text style={styles.walletTitle}>My wallets</Text>
+                                <TouchableOpacity style={styles.addButton}>
+                                    <Text style={styles.addText}>+</Text>
+                                </TouchableOpacity>
                             </View>
-                        )}
-                    />
-                </View>
 
-                {/* Recent Activity */}
-                <View style={styles.activitySection}>
-                    <Text style={styles.activityTitle}>Recent Activity</Text>
-                    <FlatList
-                        data={recentDataList}
-                        keyExtractor={(item) => item._id}
-                        renderItem={renderItem}
-                    />
-                </View>
-            </ScrollView>
+                            <FlatList
+                                data={walletList}
+                                keyExtractor={(item) => item._id}
+                                numColumns={2}
+                                columnWrapperStyle={{ justifyContent: "space-between" }}
+                                scrollEnabled={false}   // 👈 สำคัญมาก
+                                contentContainerStyle={{ marginTop: 15 }}
+                                renderItem={({ item }) => (
+                                    <View style={styles.walletCard}>
+                                        <Text style={styles.walletName}>{item.wallet_name}</Text>
+                                        <Text style={styles.walletAmount}>
+                                            ฿ {item.balance.toLocaleString()}
+                                        </Text>
+                                    </View>
+                                )}
+                            />
+                        </View>
+
+                        {/* Recent Activity Title */}
+                        <View style={styles.activitySection}>
+                            <Text style={styles.activityTitle}>Recent Activity</Text>
+                        </View>
+                    </>
+                }
+            />
         </View>
     );
 }

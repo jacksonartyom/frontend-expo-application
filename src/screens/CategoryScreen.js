@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLayoutEffect, useState, useCallback } from 'react';
+import { useLayoutEffect, useState, useCallback, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlatList, Text, TouchableOpacity, View, Modal } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from "@expo/vector-icons";
 
-import { getCategoriesList } from '../services/categoryService';
+import { getCategoriesList, deleteCategories } from '../services/categoryService';
 import { categoryStyles as styles } from '../styles/categoryStyles';
 
 export default function CategoryScreen({ navigation, setIsLoggedIn }) {
@@ -43,36 +43,40 @@ export default function CategoryScreen({ navigation, setIsLoggedIn }) {
 
   useFocusEffect(
     useCallback(() => {
-
-      const fetchData = async () => {
-        try {
-          const token = await AsyncStorage.getItem("token");
-          const response = await getCategoriesList(token);
-          const data = await response.json();
-
-          if (data.result) {
-            setCategoryList(data.result);
-          } else if (data.error === 'Invalid token') {
-            await AsyncStorage.removeItem("userId");
-            await AsyncStorage.removeItem("token");
-            await AsyncStorage.removeItem("NAVIGATION_STATE");
-            setIsLoggedIn(false);
-          }
-
-        } catch (error) {
-          alert('Network error');
-        }
-      };
-
       fetchData();
-
       setValueDDL(null);
     }, [])
   );
 
+  useEffect(() => {
+    if (valueDDL) {
+      const filtered = categoryList.filter(item => item.type === valueDDL);
+      setFilteredList(filtered);
+    }
+  }, [categoryList, valueDDL]);
+
+  const fetchData = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await getCategoriesList(token);
+      const data = await response.json();
+
+      if (data.result) {
+        setCategoryList(data.result);
+      } else if (data.error === 'Invalid token') {
+        await AsyncStorage.removeItem("userId");
+        await AsyncStorage.removeItem("token");
+        await AsyncStorage.removeItem("NAVIGATION_STATE");
+        setIsLoggedIn(false);
+      }
+
+    } catch (error) {
+      alert('Network error');
+    }
+  };
+
   const handleSelect = (value) => {
-    const filtered = categoryList.filter(item => item.type === value);
-    setFilteredList(filtered);
+    setValueDDL(value);
   };
 
   const handleDelete = (item) => {
@@ -80,14 +84,22 @@ export default function CategoryScreen({ navigation, setIsLoggedIn }) {
     setDeleteModalVisible(true);
   };
 
-  const confirmDelete = () => {
-    console.log("Deleting:", selectedItem);
+  const confirmDelete = async () => {
+    const token = await AsyncStorage.getItem("token");
+    const response = await deleteCategories(token, selectedItem._id);
+    const data = await response.json();
 
-    // ใส่ logic ลบจริงตรงนี้ เช่น call API หรือ setState
-    // deleteCategory(selectedItem.id)
+    if (data.result) {
+      setDeleteModalVisible(false);
 
-    setDeleteModalVisible(false);
-    setSelectedItem(null);
+      await fetchData(); // โหลดข้อมูลใหม่ก่อน
+
+      if (valueDDL) {
+        const filtered = categoryList
+          .filter(item => item.type === valueDDL);
+        setFilteredList(filtered);
+      }
+    }
   };
 
   const renderItem = ({ item }) => (

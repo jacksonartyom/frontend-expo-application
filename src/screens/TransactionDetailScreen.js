@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,6 +8,7 @@ import {
   View
 } from "react-native";
 import { transactionDetailStyles as styles } from "../styles/transactionDetailStyles";
+import { getTransactionListByCondition } from "../services/transactionService";
 
 export default function TransactionDetailScreen({ route, navigation }) {
   const [transactions, setTransactions] = useState([]);
@@ -71,34 +73,43 @@ export default function TransactionDetailScreen({ route, navigation }) {
   const { walletId, walletName } = route.params || {};
 
   useEffect(() => {
-    if (walletId) {
-      // จำลอง filter เดือน / ปี
-      const filtered = mockTransactions.filter((t) => {
-        const date = new Date(t.transaction_date);
-        return (
-          date.getMonth() + 1 === selectedMonth &&
-          date.getFullYear() === selectedYear
-        );
-      });
+    console.log("walletId : " + walletId);
+    console.log("selectedMonth : " + selectedMonth);
+    console.log("selectedYear : " + selectedYear);
 
-      setTransactions(filtered);
+    if (walletId && selectedMonth && selectedYear) {
+      fetchTransactionByWallet(walletId, selectedYear, selectedMonth);
     }
   }, [walletId, selectedMonth, selectedYear]);
 
   const fetchTransactionByWallet = async (id, year, month) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/dev/transaction?walletId=${id}&year=${year}&month=${month}`
-      );
+      const token = await AsyncStorage.getItem("token");
+
+      const condition = {
+        walletId: id,
+        year: year,
+        month: month,
+      };
+
+      const response = await getTransactionListByCondition(token, condition);
       const data = await response.json();
+
       setTransactions(data.result || []);
     } catch (err) {
       console.error("Fetch transaction error:", err);
     }
   };
 
-  const income = transactions.reduce((sum, t) => sum + (t.deposit || 0), 0);
-  const expense = transactions.reduce((sum, t) => sum + (t.withdraw || 0), 0);
+  const income = transactions.reduce(
+    (sum, t) => sum + (t.type === "income" ? t.amount : 0),
+    0
+  );
+
+  const expense = transactions.reduce(
+    (sum, t) => sum + (t.type === "expense" ? t.amount : 0),
+    0
+  );
 
   const months = [
     "ม.ค.",
@@ -196,7 +207,7 @@ export default function TransactionDetailScreen({ route, navigation }) {
                     new Date(a.transaction_date)
                 )
                 .map((item, index) => {
-                  const isIncome = item.deposit > 0;
+                  const isIncome = item.type === "income";
 
                   return (
                     <View key={index} style={styles.tdListRow}>
@@ -205,6 +216,9 @@ export default function TransactionDetailScreen({ route, navigation }) {
                           {new Date(
                             item.transaction_date
                           ).toLocaleDateString()}
+                        </Text>
+                        <Text style={styles.tdListNote}>
+                          {item.name || "-"}
                         </Text>
                         <Text style={styles.tdListNote}>
                           {item.note || "-"}
@@ -220,7 +234,7 @@ export default function TransactionDetailScreen({ route, navigation }) {
                         ]}
                       >
                         {isIncome ? "+" : "-"}
-                        {(item.deposit || item.withdraw).toLocaleString()} ฿
+                        {Number(item.amount).toLocaleString()} ฿
                       </Text>
                     </View>
                   );
