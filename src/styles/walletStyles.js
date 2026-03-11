@@ -36,6 +36,7 @@ export const walletStyles = StyleSheet.create({
         margin: 8,
         padding: 16,
         borderRadius: 12,
+        paddingTop: 32,
         backgroundColor: "#FFF",
         borderWidth: 1,
         borderColor: "#eee",
@@ -65,5 +66,64 @@ export const walletStyles = StyleSheet.create({
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    iconContainer: {
+        position: "absolute",
+        right: 10,
+        top: 10,
+        flexDirection: "row",
+    },
+    iconButton: {
+        marginLeft: 10,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    modalContainer: {
+        width: "85%",
+        backgroundColor: "#fff",
+        padding: 20,
+        borderRadius: 16,
+    },
+
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 10,
+    },
+
+    modalMessage: {
+        fontSize: 15,
+        marginBottom: 20,
+    },
+
+    modalActions: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+    },
+
+    modalButton: {
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        marginLeft: 10,
+    },
+    cancelButton: {
+        backgroundColor: "#BDBDBD",
+    },
+
+    deleteButton: {
+        backgroundColor: "#F44336",
+    },
+
+    balanceText: {
+        fontSize: 18,
+        fontWeight: "600",
+        marginTop: 8,
+        marginBottom: 20,
     }
 });

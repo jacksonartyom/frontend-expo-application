@@ -1,7 +1,8 @@
 // TransactionMainScreen.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState, useCallback } from 'react';
 import { Button, FlatList, Text, View, TouchableOpacity } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { getWalletList } from '../services/walletService';
 import { createTransaction } from '../services/transactionService';
@@ -15,9 +16,15 @@ export default function TransactionMainScreen({ navigation }) {
   const [walletList, setWalletList] = useState([]);
   const isWalletLocked = items.length > 0;
 
-  useLayoutEffect(() => {
-    fetchWalletData();
-  }, [navigation]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchWalletData();
+    }, [])
+  );
+
+  // useLayoutEffect(() => {
+  //   fetchWalletData();
+  // }, [navigation]);
 
   const handleAddItem = () => {
     navigation.navigate("AddTransaction", {
@@ -72,7 +79,7 @@ export default function TransactionMainScreen({ navigation }) {
       alert("Transaction saved successfully!");
       setItems([]);
       setSelectedWallet(null);
-
+      fetchWalletData();
     } catch (error) {
       alert('Network error');
     }
@@ -166,7 +173,7 @@ export default function TransactionMainScreen({ navigation }) {
               style={styles.deleteButton}
               onPress={() => handleRemoveItem(index)}
             >
-              <Ionicons name="trash-outline" size={20}/>
+              <Ionicons name="trash-outline" size={20} />
             </TouchableOpacity>
 
           </View>

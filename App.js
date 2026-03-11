@@ -14,6 +14,7 @@ import TransactionCreateScreen from "./src/screens/TransactionCreateScreen";
 import TransactionDetailScreen from "./src/screens/TransactionDetailScreen";
 import WalletScreen from "./src/screens/WalletScreen";
 import WalletCreateScreen from "./src/screens/WalletCreateScreen";
+import WalletUpdateScreen from "./src/screens/WalletUpdateScreen";
 import CategoryScreen from "./src/screens/CategoryScreen";
 import CategoryCreateScreen from "./src/screens/CategoryCreateScreen";
 
@@ -31,6 +32,11 @@ function DashboardStack({ setIsLoggedIn }) {
           />
         )}
       </Stack.Screen>
+      <Stack.Screen
+        name="AddWallet"
+        component={WalletCreateScreen}
+        options={{ title: "Add Wallets" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -65,6 +71,11 @@ function WalletStack() {
         name="AddWallet"
         component={WalletCreateScreen}
         options={{ title: "Add Wallets" }}
+      />
+      <Stack.Screen
+        name="EditWallet"
+        component={WalletUpdateScreen}
+        options={{ title: "Edit Wallets" }}
       />
       <Stack.Screen
         name="TransactionDetail"

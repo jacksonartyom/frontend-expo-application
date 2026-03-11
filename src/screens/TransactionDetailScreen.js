@@ -218,10 +218,13 @@ export default function TransactionDetailScreen({ route, navigation }) {
                           ).toLocaleDateString()}
                         </Text>
                         <Text style={styles.tdListNote}>
-                          {item.name || "-"}
+                          Name: {item.name || "-"}
                         </Text>
                         <Text style={styles.tdListNote}>
-                          {item.note || "-"}
+                          Note: {item.note || "-"}
+                        </Text>
+                        <Text style={styles.tdListNote}>
+                          Category: {item.category.name || "-"}
                         </Text>
                       </View>
 

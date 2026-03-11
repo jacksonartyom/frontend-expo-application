@@ -91,7 +91,7 @@ export default function CategoryScreen({ navigation, setIsLoggedIn }) {
 
     if (data.result) {
       setDeleteModalVisible(false);
-
+      alert(data.message);
       await fetchData(); // โหลดข้อมูลใหม่ก่อน
 
       if (valueDDL) {
@@ -99,6 +99,8 @@ export default function CategoryScreen({ navigation, setIsLoggedIn }) {
           .filter(item => item.type === valueDDL);
         setFilteredList(filtered);
       }
+    } else {
+      alert(data.message);
     }
   };
 

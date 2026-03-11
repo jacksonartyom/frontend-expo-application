@@ -100,14 +100,15 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
                         {/* Total Balance */}
                         <View style={styles.balanceSection}>
                             <Text style={styles.balanceTitle}>Total Balance</Text>
-                            <Text style={styles.balanceAmount}>฿ {totalBalance}</Text>
+                            <Text style={styles.balanceAmount}>฿ {totalBalance.toLocaleString()}</Text>
                         </View>
 
                         {/* Wallet Section */}
                         <View style={styles.walletSection}>
                             <View style={styles.walletHeader}>
                                 <Text style={styles.walletTitle}>My wallets</Text>
-                                <TouchableOpacity style={styles.addButton}>
+                                <TouchableOpacity style={styles.addButton}
+                                    onPress={() => navigation.navigate("AddWallet")}>
                                     <Text style={styles.addText}>+</Text>
                                 </TouchableOpacity>
                             </View>

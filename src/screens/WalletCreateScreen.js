@@ -35,7 +35,7 @@ export default function WalletCreateScreen({ navigation }) {
                 throw new Error("Save wallet failed");
             }
             alert("Wallet saved successfully!");
-            navigation.navigate('WalletList');
+            navigation.goBack();
 
         } catch (error) {
             alert("An error occurred. Please try again.");
