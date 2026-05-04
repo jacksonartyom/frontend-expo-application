@@ -123,6 +123,19 @@ function MainTabs({ setIsLoggedIn }) {
             />
           ),
         }}
+
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            const state = navigation.getState();
+            const tab = state.routes.find(r => r.name === 'DashboardTab');
+
+            if (tab?.state?.index > 0) {
+              navigation.navigate('DashboardTab', {
+                screen: 'Dashboard',
+              });
+            }
+          },
+        })}
       >
         {(props) => (
           <DashboardStack
@@ -146,6 +159,18 @@ function MainTabs({ setIsLoggedIn }) {
             />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            const state = navigation.getState();
+            const tab = state.routes.find(r => r.name === 'TransactionsTab');
+
+            if (tab?.state?.index > 0) {
+              navigation.navigate('TransactionsTab', {
+                screen: 'TransactionMain',
+              });
+            }
+          },
+        })}
       />
 
       <Tab.Screen
@@ -162,6 +187,18 @@ function MainTabs({ setIsLoggedIn }) {
             />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            const state = navigation.getState();
+            const tab = state.routes.find(r => r.name === 'WalletsTab');
+
+            if (tab?.state?.index > 0) {
+              navigation.navigate('WalletsTab', {
+                screen: 'WalletList',
+              });
+            }
+          },
+        })}
       />
 
       <Tab.Screen
@@ -178,6 +215,18 @@ function MainTabs({ setIsLoggedIn }) {
             />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            const state = navigation.getState();
+            const tab = state.routes.find(r => r.name === 'CategoryTab');
+
+            if (tab?.state?.index > 0) {
+              navigation.navigate('CategoryTab', {
+                screen: 'CategoryList',
+              });
+            }
+          },
+        })}
       />
 
     </Tab.Navigator>
