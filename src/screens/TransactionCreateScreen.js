@@ -29,12 +29,14 @@ export default function TransactionCreateScreen({ route, navigation }) {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+  const [errors, setErrors] = useState({});
+
   // 🔥 โหลด category จาก API
   useEffect(() => {
     fetchCategory();
   }, []);
 
-    const fetchCategory = async () => {
+  const fetchCategory = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
       const response = await getCategoriesList(token);
@@ -67,6 +69,18 @@ export default function TransactionCreateScreen({ route, navigation }) {
   };
 
   const handleSubmit = () => {
+    let newErrors = {};
+
+    if (!name.trim()) newErrors.name = "Name is required";
+    if (!amount.trim()) newErrors.amount = "Amount is required";
+    if (!categoryId) newErrors.categoryId = "Category is required";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
+
     if (!name || !amount || !categoryId) return;
 
     const selectedCategory = categoryList.find(
@@ -89,12 +103,16 @@ export default function TransactionCreateScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Name</Text>
+      <Text style={styles.label}>Name<Text style={{ color: 'red' }}> *</Text></Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, errors.name && styles.inputError]}
         value={name}
-        onChangeText={setName}
+        onChangeText={(text) => {
+          setName(text);
+          setErrors((prev) => ({ ...prev, name: null }));
+        }}
       />
+      {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
 
       <Text style={styles.label}>Note</Text>
       <TextInput
@@ -104,15 +122,17 @@ export default function TransactionCreateScreen({ route, navigation }) {
         multiline
       />
 
-      <Text style={styles.label}>Amount</Text>
+      <Text style={styles.label}>Amount<Text style={{ color: 'red' }}> *</Text></Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, errors.amount && styles.inputError]}
         value={amount}
-        onChangeText={(text) =>
-          setAmount(text.replace(/[^0-9.]/g, ""))
-        }
+        onChangeText={(text) => {
+          setAmount(text.replace(/[^0-9.]/g, ""));
+          setErrors((prev) => ({ ...prev, amount: null }));
+        }}
         keyboardType="numeric"
       />
+      {errors.amount && <Text style={styles.errorText}>{errors.amount}</Text>}
 
       <Text style={styles.label}>Type</Text>
       <View style={styles.pickerWrapper}>
@@ -128,11 +148,14 @@ export default function TransactionCreateScreen({ route, navigation }) {
         </Picker>
       </View>
 
-      <Text style={styles.label}>Category</Text>
-      <View style={styles.pickerWrapper}>
+      <Text style={styles.label}>Category<Text style={{ color: 'red' }}> *</Text></Text>
+      <View style={[styles.pickerWrapper, errors.categoryId && styles.inputError]}>
         <Picker
           selectedValue={categoryId}
-          onValueChange={(value) => setCategoryId(value)}
+          onValueChange={(value) => {
+            setCategoryId(value);
+            setErrors((prev) => ({ ...prev, categoryId: null }));
+          }}
         >
           <Picker.Item label="Select category" value="" />
           {filteredCategory.map((item) => (
@@ -144,6 +167,9 @@ export default function TransactionCreateScreen({ route, navigation }) {
           ))}
         </Picker>
       </View>
+      {errors.categoryId && (
+        <Text style={styles.errorText}>{errors.categoryId}</Text>
+      )}
 
       <Text style={styles.label}>Transaction Date</Text>
       <TouchableOpacity
@@ -206,5 +232,14 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: 8,
     padding: 12,
+  },
+  inputError: {
+    borderColor: "red",
+  },
+
+  errorText: {
+    color: "red",
+    marginBottom: 10,
+    fontSize: 12,
   },
 });
