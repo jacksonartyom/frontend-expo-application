@@ -42,7 +42,7 @@ export default function TransactionMainScreen({ navigation }) {
 
       if (data.result) {
         const mappedWallet = data.result.map((wallet) => ({
-          label: `${wallet.wallet_name} (฿${wallet.balance})`,
+          label: `${wallet.wallet_name} (฿${parseFloat(wallet.balance).toLocaleString()})`,
           value: wallet._id,
         }));
 

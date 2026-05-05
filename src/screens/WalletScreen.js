@@ -98,7 +98,7 @@ export default function WalletScreen({ navigation, setIsLoggedIn }) {
 
             <Text style={styles.cardTitle}>{item.wallet_name}</Text>
             <Text style={styles.cardAmount}>
-                {item.balance?.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท
+                {parseFloat(item.balance).toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท
             </Text>
             <Text style={styles.cardType}>{item.wallet_detail}</Text>
         </TouchableOpacity>

@@ -102,12 +102,12 @@ export default function TransactionDetailScreen({ route, navigation }) {
   };
 
   const income = transactions.reduce(
-    (sum, t) => sum + (t.type === "income" ? t.amount : 0),
+    (sum, t) => sum + (t.type === "income" ? parseFloat(t.amount) : 0),
     0
   );
 
   const expense = transactions.reduce(
-    (sum, t) => sum + (t.type === "expense" ? t.amount : 0),
+    (sum, t) => sum + (t.type === "expense" ? parseFloat(t.amount) : 0),
     0
   );
 
@@ -178,14 +178,14 @@ export default function TransactionDetailScreen({ route, navigation }) {
               <View style={styles.tdIncomeBox}>
                 <Text style={styles.tdSummaryLabel}>รายรับ</Text>
                 <Text style={styles.tdSummaryValue}>
-                  {income.toLocaleString()} ฿
+                  {income.toLocaleString(undefined, { minimumFractionDigits: 2 })} ฿
                 </Text>
               </View>
 
               <View style={styles.tdExpenseBox}>
                 <Text style={styles.tdSummaryLabel}>รายจ่าย</Text>
                 <Text style={styles.tdSummaryValue}>
-                  {expense.toLocaleString()} ฿
+                  {expense.toLocaleString(undefined, { minimumFractionDigits: 2 })} ฿
                 </Text>
               </View>
             </View>
@@ -237,7 +237,7 @@ export default function TransactionDetailScreen({ route, navigation }) {
                         ]}
                       >
                         {isIncome ? "+" : "-"}
-                        {Number(item.amount).toLocaleString()} ฿
+                        {Number(item.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })} ฿
                       </Text>
                     </View>
                   );

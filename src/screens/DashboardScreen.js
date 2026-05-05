@@ -82,7 +82,7 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
                         { color: isIncome ? "green" : "red" },
                     ]}
                 >
-                    {isIncome ? "+" : "-"}฿ {Math.abs(item.amount).toLocaleString()}
+                    {isIncome ? "+" : "-"}฿ {Math.abs(item.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </Text>
             </View>
         );
@@ -100,7 +100,7 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
                         {/* Total Balance */}
                         <View style={styles.balanceSection}>
                             <Text style={styles.balanceTitle}>Total Balance</Text>
-                            <Text style={styles.balanceAmount}>฿ {totalBalance.toLocaleString()}</Text>
+                            <Text style={styles.balanceAmount}>฿ {parseFloat(totalBalance).toLocaleString()}</Text>
                         </View>
 
                         {/* Wallet Section */}
@@ -124,7 +124,7 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
                                     <View style={styles.walletCard}>
                                         <Text style={styles.walletName}>{item.wallet_name}</Text>
                                         <Text style={styles.walletAmount}>
-                                            ฿ {item.balance.toLocaleString()}
+                                            ฿ {parseFloat(item.balance).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                                         </Text>
                                     </View>
                                 )}
