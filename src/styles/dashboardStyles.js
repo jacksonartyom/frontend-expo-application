@@ -92,4 +92,20 @@ export const dashboardStyles = StyleSheet.create({
         fontWeight: "bold",
         lineHeight: 22,
     },
+    menu: {
+        position: "absolute",
+        top: 40,
+        right: 10,
+        backgroundColor: "white",
+        borderRadius: 6,
+        padding: 10,
+        elevation: 5, // Android shadow
+        shadowColor: "#000", // iOS shadow
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+    },
+    menuItem: {
+        padding: 10,
+        fontSize: 16,
+    },
 });

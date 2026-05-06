@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { MaterialIcons } from "@expo/vector-icons";
 import { dashboardStyles as styles } from '../styles/dashboardStyles';
 
 export default function DashboardScreen({ navigation, setIsLoggedIn }) {
@@ -18,21 +19,37 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
     const [totalBalance, setTotalBalance] = useState('');
     const [walletList, setWalletList] = useState([]);
     const [recentDataList, setRecentDataList] = useState([]);
-
+    const [menuVisible, setMenuVisible] = useState(false);
 
     // 1️⃣ ใช้ตั้งค่า Header อย่างเดียว
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    style={styles.headerButton}
-                    onPress={handleLogout}
-                >
-                    <Text style={styles.headerButtonText}>LOGOUT</Text>
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity
+                        style={{ marginRight: 15 }}
+                        onPress={() => setMenuVisible(!menuVisible)}
+                    >
+                        <MaterialIcons name="more-vert" size={24} color="black" />
+                    </TouchableOpacity>
+
+                    {menuVisible && (
+                        
+                        <View style={styles.menu}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setMenuVisible(false);
+                                    handleLogout();
+                                }}
+                            >
+                                <Text style={styles.menuItem}>Logout</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                </View>
             ),
         });
-    }, [navigation]);
+    }, [navigation, menuVisible]);
 
     // 2️⃣ ใช้โหลดข้อมูลทุกครั้งที่ tab ถูก focus
     useFocusEffect(
