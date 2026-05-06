@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const walletStyles = StyleSheet.create({
     container: { flex: 1, padding: 30, backgroundColor: '#f5f7fa' },
+    containerModel: { flex: 1, padding: 30, backgroundColor: '#FFFFFF' },
     grid: { justifyContent: 'center' },
     headerButtonText: {
         color: 'white', // สีตัวอักษร

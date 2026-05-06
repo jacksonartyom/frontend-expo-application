@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export const categoryStyles = StyleSheet.create({
-    container: { flex: 1, padding: 30, backgroundColor: '#FAF9F6' },
+    container: { flex: 1, padding: 30, backgroundColor: '#F5F7FA' },
+    containerModel: { flex: 1, padding: 30, backgroundColor: '#FFFFFF' },
     grid: { justifyContent: 'center' },
     headerButtonText: {
         color: 'white', // สีตัวอักษร

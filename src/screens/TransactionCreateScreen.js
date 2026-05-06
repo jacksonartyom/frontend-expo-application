@@ -11,6 +11,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView
 } from "react-native";
 
 // 👇 import service ของคุณ
@@ -102,7 +103,7 @@ export default function TransactionCreateScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.label}>Name<Text style={{ color: 'red' }}> *</Text></Text>
       <TextInput
         style={[styles.input, errors.name && styles.inputError]}
@@ -196,7 +197,7 @@ export default function TransactionCreateScreen({ route, navigation }) {
       <View style={{ marginTop: 20 }}>
         <Button title="Add Transaction" onPress={handleSubmit} />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

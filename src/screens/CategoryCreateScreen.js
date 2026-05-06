@@ -53,7 +53,7 @@ export default function CategoryCreateScreen({ navigation }) {
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.containerModel}>
       <Text style={styles.labelFormText}>Name<Text style={{ color: 'red' }}> *</Text></Text>
       <TextInput
         style={[styles.input, errors.name ? styles.inputError : null]}

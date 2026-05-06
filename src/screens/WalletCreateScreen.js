@@ -44,7 +44,7 @@ export default function WalletCreateScreen({ navigation }) {
 
 
     return (
-        <View style={styles.container}>
+        <View style={styles.containerModel}>
             <Text style={styles.labelFormText}>Wallet Name<Text style={{ color: 'red' }}> *</Text></Text>
             <TextInput
                 style={[styles.input, errors.walletName ? styles.inputError : null]}

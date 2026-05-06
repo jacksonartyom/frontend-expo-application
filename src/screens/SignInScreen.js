@@ -1,6 +1,6 @@
 // screens/SignInScreen.js
 import { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import { login } from '../services/authService';
 import { signinStyles as styles } from '../styles/signinStyles';
 
@@ -20,7 +20,8 @@ export default function SignInScreen({ navigation, setIsLoggedIn }) {
     };
 
     return (
-        <View style={styles.containerSignIn}>
+
+        <ScrollView contentContainerStyle={styles.containerSignIn}>
             <Text style={styles.title}>TOGETHERPLACE</Text>
             <TextInput
                 placeholder="Email"
@@ -34,6 +35,8 @@ export default function SignInScreen({ navigation, setIsLoggedIn }) {
                 onChangeText={setPassword}
                 secureTextEntry
                 style={styles.input}
+                onSubmitEditing={handleLogin}
+                returnKeyType="done"
             />
             <View style={styles.containerRegister}>
                 <Text style={styles.linkTxt} onPress={() => navigation.navigate("Register")}>Register</Text>
@@ -41,6 +44,6 @@ export default function SignInScreen({ navigation, setIsLoggedIn }) {
             <TouchableOpacity style={styles.activeBtn} onPress={handleLogin}>
                 <Text style={styles.btnText}>Sign in</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     );
 }

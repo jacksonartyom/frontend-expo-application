@@ -48,7 +48,7 @@ export default function WalletUpdateScreen({ navigation, route }) {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={styles.containerModel}>
 
             <Text style={styles.labelFormText}>
                 Wallet Name<Text style={{ color: "red" }}> *</Text>

@@ -18,13 +18,9 @@ export default function TransactionMainScreen({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
-      fetchWalletData();
+        fetchWalletData();
     }, [])
   );
-
-  // useLayoutEffect(() => {
-  //   fetchWalletData();
-  // }, [navigation]);
 
   const handleAddItem = () => {
     navigation.navigate("AddTransaction", {
@@ -69,7 +65,6 @@ export default function TransactionMainScreen({ navigation }) {
         walletId: selectedWallet,
       }));
 
-      console.log("SEND TO API:", transactionsWithWallet);
       const token = await AsyncStorage.getItem("token");
       const response = await createTransaction(token, transactionsWithWallet);
       // call service here
