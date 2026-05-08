@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const registerStyles = StyleSheet.create({
-    container: { flex: 1, padding: 30, backgroundColor: '#FAF9F6' },
+    container: { flex: 1, padding: 30, backgroundColor: '#F5F7FA' },
     input: {
         borderWidth: 1,
         borderColor: '#ccc',

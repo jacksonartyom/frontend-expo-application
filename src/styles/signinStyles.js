@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const signinStyles = StyleSheet.create({
-    containerSignIn: { flex: 1, justifyContent: 'center', padding: 30, backgroundColor: '#FAF9F6' },
+    containerSignIn: { flex: 1, justifyContent: 'center', padding: 30, backgroundColor: '#F5F7FA' },
     title: { fontSize: 24, marginBottom: 20, textAlign: 'center', fontWeight: 'bold' },
     input: {
         borderWidth: 1,

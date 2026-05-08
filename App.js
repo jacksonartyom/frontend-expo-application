@@ -146,34 +146,6 @@ function MainTabs({ setIsLoggedIn }) {
       </Tab.Screen>
 
       <Tab.Screen
-        name="TransactionsTab"
-        component={TransactionStack}
-        options={{
-          headerShown: false,
-          title: "Transaction",
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? "add-circle" : "add-circle-outline"}
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            const state = navigation.getState();
-            const tab = state.routes.find(r => r.name === 'TransactionsTab');
-
-            if (tab?.state?.index > 0) {
-              navigation.navigate('TransactionsTab', {
-                screen: 'TransactionMain',
-              });
-            }
-          },
-        })}
-      />
-
-      <Tab.Screen
         name="WalletsTab"
         component={WalletStack}
         options={{
@@ -195,6 +167,34 @@ function MainTabs({ setIsLoggedIn }) {
             if (tab?.state?.index > 0) {
               navigation.navigate('WalletsTab', {
                 screen: 'WalletList',
+              });
+            }
+          },
+        })}
+      />
+
+      <Tab.Screen
+        name="TransactionsTab"
+        component={TransactionStack}
+        options={{
+          headerShown: false,
+          title: "Transaction",
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "add-circle" : "add-circle-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            const state = navigation.getState();
+            const tab = state.routes.find(r => r.name === 'TransactionsTab');
+
+            if (tab?.state?.index > 0) {
+              navigation.navigate('TransactionsTab', {
+                screen: 'TransactionMain',
               });
             }
           },

@@ -9,6 +9,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Modal
 } from 'react-native';
 import { MaterialIcons } from "@expo/vector-icons";
 import { dashboardStyles as styles } from '../styles/dashboardStyles';
@@ -25,31 +26,15 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <View>
-                    <TouchableOpacity
-                        style={{ marginRight: 15 }}
-                        onPress={() => setMenuVisible(!menuVisible)}
-                    >
-                        <MaterialIcons name="more-vert" size={24} color="black" />
-                    </TouchableOpacity>
-
-                    {menuVisible && (
-                        
-                        <View style={styles.menu}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setMenuVisible(false);
-                                    handleLogout();
-                                }}
-                            >
-                                <Text style={styles.menuItem}>Logout</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                </View>
+                <TouchableOpacity
+                    style={{ marginRight: 15 }}
+                    onPress={() => setMenuVisible(true)}
+                >
+                    <MaterialIcons name="more-vert" size={24} color="black" />
+                </TouchableOpacity>
             ),
         });
-    }, [navigation, menuVisible]);
+    }, [navigation]);
 
     // 2️⃣ ใช้โหลดข้อมูลทุกครั้งที่ tab ถูก focus
     useFocusEffect(
@@ -155,6 +140,29 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
                     </>
                 }
             />
+
+            <Modal
+                transparent={true}
+                visible={menuVisible}
+                animationType="fade"
+            >
+                <TouchableOpacity
+                    style={{ flex: 1 }}
+                    activeOpacity={1}
+                    onPress={() => setMenuVisible(false)} // กดนอกเพื่อปิด
+                >
+                    <View style={styles.menu}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setMenuVisible(false);
+                                handleLogout();
+                            }}
+                        >
+                            <Text style={styles.menuItem}>Logout</Text>
+                        </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
         </View>
     );
 }
