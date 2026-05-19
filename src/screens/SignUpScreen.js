@@ -1,10 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { registerStyles as styles } from '../styles/registerStyles';
-import { register } from "../services/authService";
+import { singupStyles as styles } from '../styles/singupStyles';
+import { singUp } from "../services/authService";
 
-export default function RegisterScreen({ navigation }) {
+export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [middleName, setMiddleName] = useState('');
@@ -26,7 +26,7 @@ export default function RegisterScreen({ navigation }) {
         }
     };
 
-    const handleRegister = async () => {
+    const handleSignUp = async () => {
         let newErrors = {};
 
         if (!email) newErrors.email = 'Email is required';
@@ -51,11 +51,11 @@ export default function RegisterScreen({ navigation }) {
             password
         };
 
-        const result = await register(requestBody);
+        const result = await singUp(requestBody);
 
         if (result.success) {
-            alert("Register successful 🎉");
-            navigation.navigate("SignIn")
+            alert("Sign up successful 🎉");
+            navigation.navigate("Sign In")
         } else {
             setErrors(prev => ({
                 ...prev,
@@ -150,9 +150,8 @@ export default function RegisterScreen({ navigation }) {
                 <Text style={styles.errorText}>{errorConfirmPassword || errors.confirmPassword}</Text>
             ) : null}
 
-            {/* เพิ่ม onPress เพื่อเรียกฟังก์ชัน handleRegister */}
-            <TouchableOpacity style={styles.activeBtn} onPress={handleRegister}>
-                <Text style={styles.btnText}>Register</Text>
+            <TouchableOpacity style={styles.activeBtn} onPress={handleSignUp}>
+                <Text style={styles.btnText}>Sign up</Text>
             </TouchableOpacity>
         </View>
     );

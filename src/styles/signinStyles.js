@@ -29,7 +29,7 @@ export const signinStyles = StyleSheet.create({
         textDecorationLine: 'underline',
         color: '#0053ee'
     },
-    containerRegister: {
+    containerSignUp: {
         width: "100%",
         alignItems: "flex-end",
         marginBottom: 15,

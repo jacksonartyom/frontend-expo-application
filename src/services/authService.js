@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from "../config/api";
 
-export async function login(email, password) {
+export async function signIn(email, password) {
     try {
-        const response = await fetch(API_URL + "/login", {
+        const response = await fetch(API_URL + "/sign-in", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ export async function login(email, password) {
     }
 }
 
-export async function register(requestBody) {
+export async function singUp(requestBody) {
     try {
         const response = await fetch(API_URL + "/sign-up", {
             method: 'POST',

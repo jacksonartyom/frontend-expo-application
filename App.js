@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
 
 import SignInScreen from "./src/screens/SignInScreen";
-import RegisterScreen from "./src/screens/RegisterScreen";
+import SignUpScreen from "./src/screens/SignUpScreen";
 import DashboardScreen from "./src/screens/DashboardScreen";
 import TransactionMainScreen from "./src/screens/TransactionMainScreen";
 import TransactionCreateScreen from "./src/screens/TransactionCreateScreen";
@@ -263,7 +263,7 @@ export default function App() {
       ) : (
         <Stack.Navigator>
           <Stack.Screen
-            name="SignIn"
+            name="Sign In"
             options={{ headerShown: false }}
           >
             {(props) => (
@@ -273,7 +273,7 @@ export default function App() {
               />
             )}
           </Stack.Screen>
-          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Sign Up" component={SignUpScreen} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

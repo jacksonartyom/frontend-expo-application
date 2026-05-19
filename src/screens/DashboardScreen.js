@@ -60,7 +60,7 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
         }, [])
     );
 
-    const handleLogout = async () => {
+    const handleSignOut = async () => {
         try {
             await AsyncStorage.removeItem("userId");
             await AsyncStorage.removeItem("token");
@@ -155,10 +155,10 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
                         <TouchableOpacity
                             onPress={() => {
                                 setMenuVisible(false);
-                                handleLogout();
+                                handleSignOut();
                             }}
                         >
-                            <Text style={styles.menuItem}>Logout</Text>
+                            <Text style={styles.menuItem}>Sign out</Text>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>

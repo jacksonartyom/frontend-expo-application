@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const registerStyles = StyleSheet.create({
+export const singupStyles = StyleSheet.create({
     container: { flex: 1, padding: 30, backgroundColor: '#F5F7FA' },
     input: {
         borderWidth: 1,
