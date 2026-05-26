@@ -173,25 +173,36 @@ export default function TransactionCreateScreen({ route, navigation }) {
       )}
 
       <Text style={styles.label}>Transaction Date</Text>
-      <TouchableOpacity
-        style={styles.dateButton}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <Text>{formatDate(date)}</Text>
-      </TouchableOpacity>
-
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={(event, selectedDate) => {
-            setShowDatePicker(false);
-            if (selectedDate) {
-              setDate(selectedDate);
-            }
-          }}
+      {Platform.OS === "web" ? (
+        <input
+          type="date"
+          value={date.toISOString().split("T")[0]}
+          onChange={(e) => setDate(new Date(e.target.value))}
+          style={{ padding: 10, fontSize: 16 }}
         />
+      ) : (
+        <>
+          <TouchableOpacity
+            style={styles.dateButton}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text>{formatDate(date)}</Text>
+          </TouchableOpacity>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display={Platform.OS === "ios" ? "spinner" : "default"}
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) {
+                  setDate(selectedDate);
+                }
+              }}
+            />
+          )}
+        </>
       )}
 
       <View style={{ marginTop: 20 }}>

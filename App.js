@@ -17,6 +17,7 @@ import WalletCreateScreen from "./src/screens/WalletCreateScreen";
 import WalletUpdateScreen from "./src/screens/WalletUpdateScreen";
 import CategoryScreen from "./src/screens/CategoryScreen";
 import CategoryCreateScreen from "./src/screens/CategoryCreateScreen";
+import UserScreen from "./src/screens/UserScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -105,6 +106,19 @@ function CategoryStack() {
     </Stack.Navigator>
   );
 }
+
+function UserStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="UserProfile"
+        component={UserScreen}
+        options={{ title: "User Profile" }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 
 function MainTabs({ setIsLoggedIn }) {
   return (
@@ -223,6 +237,34 @@ function MainTabs({ setIsLoggedIn }) {
             if (tab?.state?.index > 0) {
               navigation.navigate('CategoryTab', {
                 screen: 'CategoryList',
+              });
+            }
+          },
+        })}
+      />
+
+      <Tab.Screen
+        name="UserTab"
+        component={UserStack}
+        options={{
+          headerShown: false,
+          title: "User",
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            const state = navigation.getState();
+            const tab = state.routes.find(r => r.name === 'UserTab');
+
+            if (tab?.state?.index > 0) {
+              navigation.navigate('UserTab', {
+                screen: 'UserScreen',
               });
             }
           },

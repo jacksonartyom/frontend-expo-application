@@ -126,6 +126,17 @@ export default function TransactionDetailScreen({ route, navigation }) {
     "ธ.ค.",
   ];
 
+  const splitText = (text, chunkSize = 30) => {
+    if (!text) return "-";
+    const result = [];
+
+    for (let i = 0; i < text.length; i += chunkSize) {
+      result.push(text.slice(i, i + chunkSize));
+    }
+
+    return result.join("\n");
+  };
+
   return (
     <SafeAreaView style={styles.tdSafeArea}>
       <View style={styles.tdContainer}>
@@ -221,7 +232,7 @@ export default function TransactionDetailScreen({ route, navigation }) {
                           Name: {item.name || "-"}
                         </Text>
                         <Text style={styles.tdListNote}>
-                          Note: {item.note || "-"}
+                          Note: {splitText(item.note)}
                         </Text>
                         <Text style={styles.tdListNote}>
                           Category: {item.category.name || "-"}

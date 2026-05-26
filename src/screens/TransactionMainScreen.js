@@ -18,7 +18,7 @@ export default function TransactionMainScreen({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
-        fetchWalletData();
+      fetchWalletData();
     }, [])
   );
 
@@ -175,9 +175,10 @@ export default function TransactionMainScreen({ navigation }) {
         )}
       />
 
-      <View style={styles.saveButtonWrapper}>
+      {items.length > 0 && <View style={styles.saveButtonWrapper}>
         <Button title="SAVE ALL" onPress={handleSaveAll} />
-      </View>
+      </View>}
+
 
     </View>
   );

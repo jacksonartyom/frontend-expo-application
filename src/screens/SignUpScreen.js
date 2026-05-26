@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View, Image, StyleSheet } from 'react-native';
 import { singupStyles as styles } from '../styles/singupStyles';
-import { singUp } from "../services/authService";
+import { singUp, uploadFile } from "../services/authService";
+import * as ImagePicker from 'expo-image-picker';
+import ImagePickerSection from "../componants/ImagePickerSection";
 
 export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
@@ -17,6 +19,23 @@ export default function SignUpScreen({ navigation }) {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
     const [errors, setErrors] = useState({});
+
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.assets[0]);
+        }
+    };
+
+    const removeImage = () => {
+        setImage(null);
+    };
 
     const validate = () => {
         if (confirmPassword !== '' && password !== confirmPassword) {
@@ -39,32 +58,44 @@ export default function SignUpScreen({ navigation }) {
         }
 
         setErrors(newErrors);
-
         if (Object.keys(newErrors).length > 0) return;
 
-        const requestBody = {
-            email,
-            firstName,
-            lastName,
-            middleName,
-            phoneNo,
-            password
-        };
+        try {
+            let imageUrl = null;
 
-        const result = await singUp(requestBody);
+            // 1. upload image ก่อน
+            if (image) {
+                const uploadRes = await uploadFile(image);
+                imageUrl = uploadRes.url;
+            }
 
-        if (result.success) {
-            alert("Sign up successful 🎉");
-            navigation.navigate("Sign In")
-        } else {
-            setErrors(prev => ({
-                ...prev,
-                email: result.message
-            }));
-            return;
+            // 2. ยิง sign up พร้อม imageUrl
+            const requestBody = {
+                email,
+                firstName,
+                lastName,
+                middleName,
+                phoneNo,
+                password,
+                imageProfile: imageUrl
+            };
+
+            const result = await singUp(requestBody);
+
+            if (result.success) {
+                alert("Sign up successful 🎉");
+                navigation.navigate("Sign In");
+            } else {
+                setErrors(prev => ({
+                    ...prev,
+                    email: result.message
+                }));
+            }
+
+        } catch (err) {
+            console.log(err);
+            alert("Something went wrong");
         }
-
-
     };
 
     return (
@@ -149,6 +180,12 @@ export default function SignUpScreen({ navigation }) {
             {(errorConfirmPassword || errors.confirmPassword) ? (
                 <Text style={styles.errorText}>{errorConfirmPassword || errors.confirmPassword}</Text>
             ) : null}
+
+            <ImagePickerSection
+                image={image}
+                pickImage={pickImage}
+                removeImage={removeImage}
+            />
 
             <TouchableOpacity style={styles.activeBtn} onPress={handleSignUp}>
                 <Text style={styles.btnText}>Sign up</Text>

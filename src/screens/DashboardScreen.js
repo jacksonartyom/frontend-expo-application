@@ -77,7 +77,7 @@ export default function DashboardScreen({ navigation, setIsLoggedIn }) {
         const isIncome = item.type == 'income';
         return (
             <View style={styles.activityRow}>
-                <Text style={styles.activityText}>- {item.name}</Text>
+                <Text style={styles.activityText}>- {item.transactionDate} | {item.name} </Text>
                 <Text
                     style={[
                         styles.amountText,

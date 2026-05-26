@@ -51,3 +51,36 @@ export async function singUp(requestBody) {
         return { success: false, message: error.message };
     }
 }
+
+export async function uploadFile(image) {
+    if (!image || !image.uri) {
+        console.log("❌ Invalid image:", image);
+        return;
+    }
+
+    const formData = new FormData();
+
+    const file = {
+        uri: image.uri,
+        name: image.fileName || "photo.jpg",
+        type: image.mimeType || "image/jpeg",
+    };
+
+    console.log("📦 FILE:", file);
+
+    formData.append("file", file);
+
+    const response = await fetch(API_URL + "/upload", {
+        method: "POST",
+        body: formData,
+        headers: {
+            Accept: "application/json",
+            // ❌ ห้าม set Content-Type
+        },
+    });
+
+    const data = await response.json();
+    console.log("RESPONSE:", data);
+
+    return data;
+}
