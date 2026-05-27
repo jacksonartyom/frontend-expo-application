@@ -54,7 +54,6 @@ export async function singUp(requestBody) {
 
 export async function uploadFile(image) {
     if (!image || !image.uri) {
-        console.log("❌ Invalid image:", image);
         return;
     }
 
@@ -65,9 +64,6 @@ export async function uploadFile(image) {
         name: image.fileName || "photo.jpg",
         type: image.mimeType || "image/jpeg",
     };
-
-    console.log("📦 FILE:", file);
-
     formData.append("file", file);
 
     const response = await fetch(API_URL + "/upload", {
@@ -75,7 +71,6 @@ export async function uploadFile(image) {
         body: formData,
         headers: {
             Accept: "application/json",
-            // ❌ ห้าม set Content-Type
         },
     });
 

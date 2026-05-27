@@ -107,14 +107,18 @@ function CategoryStack() {
   );
 }
 
-function UserStack() {
+function UserStack({ setIsLoggedIn }) {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="UserProfile"
-        component={UserScreen}
-        options={{ title: "User Profile" }}
-      />
+      <Stack.Screen name="UserProfile"
+        options={{ title: "User Profile" }}>
+        {(props) => (
+          <UserScreen
+            {...props}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
@@ -245,10 +249,9 @@ function MainTabs({ setIsLoggedIn }) {
 
       <Tab.Screen
         name="UserTab"
-        component={UserStack}
         options={{
-          headerShown: false,
-          title: "User",
+          headerShown: true,
+          title: "User Profile",
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "person" : "person-outline"}
@@ -269,7 +272,14 @@ function MainTabs({ setIsLoggedIn }) {
             }
           },
         })}
-      />
+      >
+        {(props) => (
+          <UserScreen
+            {...props}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        )}
+      </Tab.Screen>
 
     </Tab.Navigator>
   );

@@ -185,6 +185,7 @@ export default function SignUpScreen({ navigation }) {
                 image={image}
                 pickImage={pickImage}
                 removeImage={removeImage}
+                name={"Select Profile Image"}
             />
 
             <TouchableOpacity style={styles.activeBtn} onPress={handleSignUp}>
